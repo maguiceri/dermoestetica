@@ -22,7 +22,7 @@
     --sans:"Jost","Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-top:92px}
   body{
     font-family:var(--sans);
     color:var(--olive-ink);
@@ -40,23 +40,24 @@
     font-weight:400;color:var(--sage-deep);
   }
 
-  /* ---------- header ---------- */
-  header{
-    position:sticky;top:0;z-index:50;
-    background:rgba(250,248,242,.82);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav{display:flex;align-items:center;justify-content:space-between;height:78px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand .logo{width:50px;height:50px;border-radius:50%;flex:none;display:block;object-fit:cover;
-    box-shadow:0 7px 20px -9px rgba(43,50,38,.55);transition:transform .3s ease}
-  .brand:hover .logo{transform:rotate(-4deg) scale(1.04)}
-  .brand .name{font-family:var(--serif);font-size:1.5rem;letter-spacing:.18em;font-weight:600}
-  .brand .name small{display:block;font-family:var(--sans);font-size:.5rem;letter-spacing:.42em;color:var(--sage-deep);margin-top:-2px}
-  .menu{display:flex;align-items:center;gap:34px}
-  .menu a{font-size:.82rem;letter-spacing:.06em;color:var(--olive-ink);opacity:.78;transition:opacity .2s}
+  /* ---------- header (píldora flotante) ---------- */
+  header{position:fixed;top:14px;left:0;right:0;z-index:60;padding:0 16px}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:18px;
+    width:100%;max-width:1040px;margin:0 auto;height:60px;padding:0 12px 0 16px;
+    background:rgba(250,248,242,.72);backdrop-filter:blur(16px) saturate(1.3);
+    -webkit-backdrop-filter:blur(16px) saturate(1.3);
+    border:1px solid rgba(43,50,38,.10);border-radius:999px;
+    box-shadow:0 14px 34px -18px rgba(43,50,38,.45)}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .logo{width:40px;height:40px;border-radius:50%;flex:none;display:block;object-fit:cover;
+    box-shadow:0 5px 14px -7px rgba(43,50,38,.55);transition:transform .3s ease}
+  .brand:hover .logo{transform:rotate(-4deg) scale(1.06)}
+  .brand .name{font-family:var(--serif);font-size:1.24rem;letter-spacing:.16em;font-weight:600;line-height:1}
+  .brand .name small{display:block;font-family:var(--sans);font-size:.46rem;letter-spacing:.34em;color:var(--sage-deep);margin-top:2px}
+  .menu{display:flex;align-items:center;gap:26px}
+  .menu a{font-size:.8rem;letter-spacing:.05em;color:var(--olive-ink);opacity:.8;transition:opacity .2s}
   .menu a:hover{opacity:1}
+  .menu .btn{padding:11px 22px}
   .btn{
     display:inline-block;font-family:var(--sans);font-size:.8rem;letter-spacing:.12em;
     text-transform:uppercase;padding:13px 26px;border-radius:999px;cursor:pointer;
@@ -134,16 +135,15 @@
   .trat-panel{position:absolute;inset:0;display:grid;grid-template-columns:1.06fr .94fr;gap:50px;
     align-items:center;opacity:0;pointer-events:none;will-change:transform,opacity}
   .trat-media{position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);
-    clip-path:inset(0 var(--clip,100%) 0 0)}            /* se revela desde la izquierda */
-  .trat-media video{width:100%;height:100%;object-fit:cover;display:block;background:transparent}
-  /* fondo/poster mientras no haya video cargado */
-  .trat-media::after{content:"";position:absolute;inset:0;z-index:-1}
-  .v1 .trat-media::after{background:linear-gradient(150deg,#A6B28E,#6E7C5E)}
-  .v2 .trat-media::after{background:linear-gradient(150deg,#B7A98C,#8A7A57)}
-  .v3 .trat-media::after{background:linear-gradient(150deg,#9FB0A0,#5F7568)}
-  .v4 .trat-media::after{background:linear-gradient(150deg,#C2B49B,#7E8B6B)}
-  .v5 .trat-media::after{background:linear-gradient(150deg,#94A3B0,#566977)}
-  .v6 .trat-media::after{background:linear-gradient(150deg,#A8AE8C,#5E6B4A)}
+    background:linear-gradient(150deg,#A6B28E,#6E7C5E);          /* poster mientras carga el video */
+    clip-path:inset(0 var(--clip,100%) 0 0)}                     /* se revela desde la izquierda */
+  .trat-media video{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block}
+  .v1 .trat-media{background:linear-gradient(150deg,#A6B28E,#6E7C5E)}
+  .v2 .trat-media{background:linear-gradient(150deg,#B7A98C,#8A7A57)}
+  .v3 .trat-media{background:linear-gradient(150deg,#9FB0A0,#5F7568)}
+  .v4 .trat-media{background:linear-gradient(150deg,#C2B49B,#7E8B6B)}
+  .v5 .trat-media{background:linear-gradient(150deg,#94A3B0,#566977)}
+  .v6 .trat-media{background:linear-gradient(150deg,#A8AE8C,#5E6B4A)}
   .trat-num{position:absolute;top:16px;left:20px;z-index:2;font-family:var(--serif);color:#fff;
     font-size:1.5rem;letter-spacing:.08em;opacity:.92;text-shadow:0 2px 12px rgba(0,0,0,.25)}
   .trat-badge{position:absolute;bottom:16px;left:20px;z-index:2;color:#fff;font-size:.74rem;
@@ -152,9 +152,11 @@
   .trat-info .eyebrow{display:block;margin-bottom:10px}
   .trat-info h3{font-size:clamp(2rem,3.4vw,3rem);margin-bottom:14px}
   .trat-info p{font-size:1.05rem;opacity:.82;max-width:30em;margin-bottom:26px}
-  .trat-dots{position:absolute;left:50%;bottom:6vh;transform:translateX(-50%);display:flex;gap:10px}
-  .trat-dots i{width:8px;height:8px;border-radius:50%;background:var(--olive-ink);opacity:.18;transition:opacity .3s,transform .3s}
-  .trat-dots i.on{opacity:.85;transform:scale(1.35)}
+  .trat-dots{position:absolute;left:50%;bottom:5vh;transform:translateX(-50%);display:flex;gap:13px;z-index:6}
+  .trat-dots button{width:12px;height:12px;border-radius:50%;border:0;padding:0;cursor:pointer;
+    background:var(--olive-ink);opacity:.2;transition:opacity .3s,transform .3s}
+  .trat-dots button:hover{opacity:.55}
+  .trat-dots button.on{opacity:.92;transform:scale(1.4)}
 
   /* tecnologia */
   .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
@@ -235,31 +237,66 @@
 
   /* ---------- responsive ---------- */
   @media(max-width:880px){
-    .menu{position:fixed;inset:78px 0 auto 0;background:var(--paper);flex-direction:column;gap:0;
-      padding:10px 28px 24px;border-bottom:1px solid var(--line);transform:translateY(-130%);transition:transform .35s ease;z-index:40}
-    .menu.open{transform:none}
-    .menu a{padding:14px 0;width:100%;border-bottom:1px solid var(--line)}
-    .menu .btn{margin-top:14px;text-align:center}
+    /* menú móvil: panel redondeado que cae debajo de la píldora */
+    .menu{position:fixed;top:84px;left:16px;right:16px;background:var(--paper);flex-direction:column;
+      align-items:stretch;gap:0;padding:8px 20px 18px;border:1px solid var(--line);border-radius:22px;
+      box-shadow:var(--shadow);transform:translateY(-12px) scale(.98);opacity:0;pointer-events:none;
+      transform-origin:top center;transition:transform .3s ease,opacity .3s ease;z-index:55}
+    .menu.open{transform:none;opacity:1;pointer-events:auto}
+    .menu a{padding:15px 2px;width:100%;border-bottom:1px solid var(--line)}
+    .menu .btn{margin-top:14px;text-align:center;padding:14px 22px}
     .nav-toggle{display:block}
-    .hero .wrap{grid-template-columns:1fr;padding-top:54px;padding-bottom:64px;text-align:center}
+    .hero .wrap{grid-template-columns:1fr;padding-top:96px;padding-bottom:60px;gap:32px;text-align:center}
+    .hero h1{font-size:clamp(2.2rem,8.5vw,3.2rem)}
+    .hero p.lead{margin-left:auto;margin-right:auto}
     .hero-cta{justify-content:center}
     .hero-logo{order:-1;animation:logoIntroM 1.2s cubic-bezier(.2,.75,.25,1) both}
-    .hero-logo img{width:min(260px,62%)}
+    .hero-logo img{width:min(240px,60%)}
     .hero-copy .eyebrow{animation-delay:1s}
     .hero-copy h1{animation-delay:1.15s}
     .hero-copy .lead{animation-delay:1.3s}
     .hero-copy .hero-cta{animation-delay:1.45s}
     @keyframes logoIntroM{from{opacity:0;transform:translateY(18px) scale(.85)}to{opacity:1;transform:none}}
     .grid,.tech-grid,.turnos-grid,.doc,#contacto .grid3{grid-template-columns:1fr}
-    section{padding:72px 0}
-    .doc-photo{max-width:340px;margin:0 auto}
+    section{padding:64px 0}
+    .head{margin-bottom:36px}
+    .doc{gap:30px}
+    .doc-photo{max-width:320px;margin:0 auto}
+    .tech{padding:36px 30px}
+    .trust .wrap{gap:10px 26px;font-size:.72rem;padding:18px 28px}
+    .turnos-grid{gap:34px}
+    .form{padding:28px 22px}
+    .foot{gap:24px}
+    .foot-bottom{flex-direction:column;gap:8px}
     /* tratamientos: en móvil se apilan, sin sticky ni choreography */
     .trat{height:auto}
-    .trat-sticky{position:static;height:auto;display:block;overflow:visible;padding:8px 0 40px}
+    .trat-sticky{position:static;height:auto;display:block;overflow:visible;padding:0 0 8px}
+    .trat-stage{min-height:0}
     .trat-panel{position:static;opacity:1!important;transform:none!important;pointer-events:auto;
-      grid-template-columns:1fr;gap:22px;margin-bottom:54px}
+      grid-template-columns:1fr;gap:20px;margin-bottom:48px}
     .trat-media{clip-path:none!important}
+    .trat-info h3{font-size:1.7rem}
+    .trat-info p{font-size:1rem}
     .trat-dots{display:none}
+  }
+
+  /* teléfonos chicos */
+  @media(max-width:480px){
+    .wrap{padding:0 18px}
+    header{padding:0 12px}
+    .nav{height:56px;padding:0 10px 0 12px}
+    .brand .logo{width:36px;height:36px}
+    .brand .name{font-size:1.1rem;letter-spacing:.14em}
+    .menu{top:78px;left:12px;right:12px}
+    section{padding:54px 0}
+    .hero h1{font-size:clamp(2rem,9vw,2.7rem)}
+    .hero p.lead{font-size:1rem}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .hero-cta .btn{width:100%;text-align:center}
+    .head h2{font-size:clamp(1.8rem,7vw,2.4rem)}
+    .tech h3{font-size:1.7rem}
+    .contact-cta{flex-direction:column;align-items:stretch}
+    .contact-cta .btn{width:100%;text-align:center}
   }
   @media(prefers-reduced-motion:reduce){
     *{scroll-behavior:auto !important}
@@ -429,8 +466,13 @@
             </article>
 
           </div>
-          <div class="trat-dots" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i>
+          <div class="trat-dots" role="tablist" aria-label="Ir a un tratamiento">
+            <button type="button" aria-label="Depilación láser"></button>
+            <button type="button" aria-label="Relleno de labios"></button>
+            <button type="button" aria-label="Rinomodelación"></button>
+            <button type="button" aria-label="Tratamientos faciales"></button>
+            <button type="button" aria-label="Venus Legacy"></button>
+            <button type="button" aria-label="CM Slim"></button>
           </div>
         </div>
       </div>
@@ -499,8 +541,8 @@
         <form id="turnoForm">
           <h3>Solicitar turno</h3>
           <div class="field">
-            <label for="trat">Tratamiento</label>
-            <select id="trat" required>
+            <label for="trat-sel">Tratamiento</label>
+            <select id="trat-sel" required>
               <option value="" selected disabled>Elegí una opción</option>
               <option>Depilación láser</option>
               <option>Relleno de labios</option>
@@ -682,11 +724,19 @@
     const panels=[...trat.querySelectorAll('.trat-panel')];
     const medias=panels.map(p=>p.querySelector('.trat-media'));
     const vids=panels.map(p=>p.querySelector('.trat-vid'));
-    const dots=[...trat.querySelectorAll('.trat-dots i')];
+    const dots=[...trat.querySelectorAll('.trat-dots button')];
     const N=panels.length;
     const desktop=matchMedia('(min-width:881px)');
     const cl=x=>x<0?0:x>1?1:x, sm=x=>x*x*(3-2*x);
     let active=-1, tick=false;
+
+    // tocar un dot lleva a ese tratamiento
+    dots.forEach((d,i)=>d.addEventListener('click',()=>{
+      const sp=trat.offsetHeight-window.innerHeight;
+      if(sp<=0)return;
+      const top=trat.getBoundingClientRect().top+window.scrollY+(i/(N-1))*sp;
+      window.scrollTo({top,behavior:'smooth'});
+    }));
 
     function render(){
       tick=false;
