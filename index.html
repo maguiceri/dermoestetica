@@ -776,15 +776,32 @@
     updateFill();
   }
 
-  // al ir a una sección desde el header, completar el texto visible (no a medias)
+  // navegación interna por anclas: salto directo (sin scroll suave) para no
+  // "barrer" todos los videos del carrusel al pasar de largo hacia otra sección
   function completeVisible(){
     const vh=window.innerHeight;
     for(const el of fillEls){
       if(el.getBoundingClientRect().top < vh*0.92){ setAll(el,1); el._state=1; }
     }
   }
-  document.querySelectorAll('header a[href^="#"]').forEach(a=>{
-    a.addEventListener('click',()=>{ setTimeout(completeVisible,600); setTimeout(completeVisible,900); });
+  const docEl=document.documentElement;
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const href=a.getAttribute('href');
+      if(!href || href.length<2) return;
+      const t=document.getElementById(href.slice(1));
+      if(!t) return;
+      e.preventDefault();
+      menu.classList.remove('open');
+      const top=Math.max(0, t.getBoundingClientRect().top + window.scrollY - 84);
+      const prev=docEl.style.scrollBehavior;
+      docEl.style.scrollBehavior='auto';     // anula el smooth global → salto directo
+      window.scrollTo(0, top);
+      docEl.style.scrollBehavior=prev;
+      if(history.pushState) history.pushState(null,'',href);
+      completeVisible();
+      requestAnimationFrame(completeVisible);
+    });
   });
 
   // ---------- tratamientos: secuencia de videos guiada por scroll ----------
