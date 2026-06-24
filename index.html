@@ -55,6 +55,7 @@
     font-weight:300;
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
+    overflow-x:clip;
   }
   h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.05;letter-spacing:.01em}
   a{color:inherit;text-decoration:none}
@@ -267,6 +268,16 @@
   html.js .hero h1 em.painting .fw{animation:paintWord .5s ease both}
 
   /* ---------- responsive ---------- */
+  /* tablet / pantallas medianas: escala parejo */
+  @media(max-width:1024px){
+    .wrap{padding:0 24px}
+    section{padding:88px 0}
+    .hero .wrap{gap:40px}
+    .hero h1{font-size:clamp(2.6rem,6.2vw,4rem)}
+    .trat-panel{gap:38px}
+    .trat-info h3{font-size:clamp(1.9rem,3.6vw,2.6rem)}
+    .tech{padding:40px 34px}
+  }
   @media(max-width:880px){
     /* menú móvil: panel redondeado que cae debajo de la píldora */
     .menu{position:fixed;top:84px;left:16px;right:16px;background:var(--paper);flex-direction:column;
@@ -356,7 +367,7 @@
 <header>
   <div class="wrap nav">
     <a class="brand" href="#inicio" aria-label="DEL Dermoestética Láser">
-      <img class="logo" src="logo.png" alt="DEL Dermoestética Láser" width="50" height="50" />
+      <img decoding="async" class="logo" src="logo.png" alt="DEL Dermoestética Láser" width="50" height="50" />
       <span class="name">DEL<small>Dermoestética Láser</small></span>
     </a>
     <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -384,7 +395,7 @@
         </div>
       </div>
       <div class="hero-logo">
-        <img src="logo.png" alt="DEL · Dermoestética Láser" />
+        <img decoding="async" src="logo.png" alt="DEL · Dermoestética Láser" />
       </div>
     </div>
   </section>
@@ -636,7 +647,7 @@
     <div class="foot">
       <div>
         <div class="brand">
-          <img class="logo" src="logo.png" alt="DEL Dermoestética Láser" width="56" height="56" />
+          <img decoding="async" loading="lazy" class="logo" src="logo.png" alt="DEL Dermoestética Láser" width="56" height="56" />
           <span class="name">DEL<small>Dermoestética Láser</small></span>
         </div>
         <p>Centro de medicina estética en Buenos Aires. Dirección médica del Dr. Suárez.</p>
@@ -738,7 +749,7 @@
   function updateFill(){
     ticking=false;
     const vh=window.innerHeight;
-    const start=vh*0.92, end=vh*0.32;   // banda donde se rellena
+    const start=vh*0.98, end=vh*0.74;   // banda baja: el texto se completa apenas entra
     for(const el of fillEls){
       const r=el.getBoundingClientRect();
       if(r.top>vh){ if(el._state!==0){setAll(el,0);el._state=0;} continue; }
@@ -765,6 +776,17 @@
     addEventListener('resize',onScroll,{passive:true});
     updateFill();
   }
+
+  // al ir a una sección desde el header, completar el texto visible (no a medias)
+  function completeVisible(){
+    const vh=window.innerHeight;
+    for(const el of fillEls){
+      if(el.getBoundingClientRect().top < vh*0.92){ setAll(el,1); el._state=1; }
+    }
+  }
+  document.querySelectorAll('header a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',()=>{ setTimeout(completeVisible,600); setTimeout(completeVisible,900); });
+  });
 
   // ---------- tratamientos: secuencia de videos guiada por scroll ----------
   (function(){
